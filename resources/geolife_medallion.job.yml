@@ -1,0 +1,54 @@
+resources:
+  jobs:
+    geolife_medallion:                   # ← resource key: what `bundle run` uses
+      name: geolife-medallion
+      schedule:
+        quartz_cron_expression: "0 30 6 * * ?"   # 06:30 daily
+        timezone_id: UTC
+        pause_status: PAUSED                    # dev mode pauses it automatically
+
+      tasks:
+        - task_key: bronze
+          python_wheel_task:
+            package_name: geolife_medallion
+            entry_point: geolife-bronze
+            parameters: ["--catalog", "${var.catalog}", "--schema", "${var.schema}",
+                         "--run-id", "{{job.run_id}}"]
+          environment_key: default
+
+        - task_key: silver
+          depends_on:
+            - task_key: bronze
+          python_wheel_task:
+            package_name: geolife_medallion
+            entry_point: geolife-silver
+            parameters: ["--catalog", "${var.catalog}", "--schema", "${var.schema}",
+                         "--run-id", "{{job.run_id}}"]
+          environment_key: default
+
+        - task_key: gold
+          depends_on:
+            - task_key: silver
+          python_wheel_task:
+            package_name: geolife_medallion
+            entry_point: geolife-gold
+            parameters: ["--catalog", "${var.catalog}", "--schema", "${var.schema}",
+                         "--run-id", "{{job.run_id}}"]
+          environment_key: default
+
+        - task_key: sql_objects            # functions and views; runs last because views need the tables
+          depends_on:
+            - task_key: gold
+          python_wheel_task:
+            package_name: geolife_medallion
+            entry_point: sql-objects
+            parameters: ["--catalog", "${var.catalog}", "--schema", "${var.schema}",
+                         "--run-id", "{{job.run_id}}"]
+          environment_key: default
+
+      environments:                      # serverless: how each task gets the wheel installed
+        - environment_key: default
+          spec:
+            environment_version: "5" 
+            dependencies:
+              - ../dist/*.whl

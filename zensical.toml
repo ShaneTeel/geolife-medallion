@@ -1,0 +1,47 @@
+[project]
+site_name = "Geolife Medallion"
+site_description = "Documentation for the geolife_medallion geospatial pipeline"
+# site_url = "https://github.io"
+
+nav = [
+  { "Home" = "index.md" },
+  { "Onboarding" = "onboarding.md" },
+  { "API references" = [
+    { "I/O" = "references/io.md" },
+    { "Preprocessing" = "references/preprocess.md" },
+    { "Extraction" = "references/extract.md" },
+    { "Medallion Jobs" = "references/jobs.md" },
+    { "Utilities" = "references/utils.md" }
+  ] }
+]
+
+[project.theme]
+features = [
+  "navigation.expand",
+  "navigation.top",
+  "content.code.copy",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[project.plugins.mkdocstrings.handlers.python]
+paths = ["src"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "google"
+heading_level = 2
+show_root_heading = true
+show_root_full_path = false
+show_source = false
+separate_signature = true
+show_signature_annotations = true

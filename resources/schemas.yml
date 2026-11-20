@@ -1,0 +1,19 @@
+# The prod schema, created by the bundle so a first prod deploy needs no manual setup.
+#
+# Prod only: in dev, the schema is each developer's personal one (see README "Setup").
+# The bundle must not own it, or `bundle destroy -t dev` would drop it.
+targets:
+  prod:
+    resources:
+      schemas:
+        target_schema:
+          catalog_name: ${var.catalog}
+          name: ${var.schema}
+          comment: Medallion tables for ${bundle.name}
+          lifecycle:
+            prevent_destroy: true   # `bundle destroy -t prod` refuses instead of dropping prod data
+
+      volumes:
+        landing:
+          # Referencing the schema resource makes the bundle create the schema before the volume.
+          schema_name: ${resources.schemas.target_schema.name}

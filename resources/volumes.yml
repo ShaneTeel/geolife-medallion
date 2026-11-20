@@ -1,0 +1,7 @@
+resources:
+  volumes:
+    landing:
+      catalog_name: ${var.catalog}
+      schema_name: ${var.schema}
+      name: landing
+      comment: Raw GeoLife .plt files for bronze ingestion
