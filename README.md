@@ -193,6 +193,5 @@ code is generic and carries over unchanged. Only the parts that know about GeoLi
 
 ## Contributing
 
-Project conventions (schemas and validation, medallion rules, logging, docstrings, tests) are
-written down in [`CLAUDE.md`](CLAUDE.md). To add a job, volume, or other workspace resource,
+To add a job, volume, or other workspace resource,
 start from the templates in [`resources/README.md`](resources/README.md).

@@ -157,9 +157,6 @@ You have now been through the full lifecycle.
 | Test the whole pipeline in Databricks | `bash deploy.sh dev geolife_medallion` |
 | Get to prod | Pull request → merge. Never deploy prod by hand. |
 
-Conventions (logging, schemas, validation rules, docstrings) are written down in `CLAUDE.md` at the
-repo root. Read it once. It explains *why* the code looks the way it does.
-
 ---
 
 ## 4. Troubleshooting
